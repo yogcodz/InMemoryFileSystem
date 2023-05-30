@@ -19,6 +19,7 @@ Implemented in Python using Trie data structure
 - change dir using absolute path
 - list contents using absolute path
 - print entire file system content in intended format to represent structure
+- add and remove user permissions at fileNode level
 
 ## Running the code
 ```
