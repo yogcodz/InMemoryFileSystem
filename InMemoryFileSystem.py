@@ -7,6 +7,7 @@ class FileSystemNode:
 	self.name = name
 	self.parent = None
 	self.contents = ""
+	self.permissions = {"read":set(),"write":set()} # when read and write lists are empty everyone has access
         
 
 class FileSystem:
@@ -116,6 +117,27 @@ class FileSystem:
 	destn_node.children[filename] =  filename_node
 	del self.pwd.children[filename]
 
+
+    def set_permissions(self, fileNode, username, read = True, write = True):
+	if read:
+	    fileNode.permissions["read"].add(username) 
+	if write:
+	    fileNode.permissions["write"].add(username)
+
+
+    def update_permissions(self, fileNode, username, read = True, write = True):
+	pdb.set_trace()
+	perms = fileNode.permissions
+	if(read):
+	    perms["read"].add(username)
+	elif username in perms["read"]:
+	    perms["read"].remove(username)
+	
+	if(write):
+            perms["write"].add(username)
+        elif username in perms["write"]:
+            perms["write"].remove(username)
+
     
 	
 
@@ -142,9 +164,13 @@ obj.get_pwd()
 obj.create_file("fileA.txt")
 obj.write_to_file("fileA.txt", "fileA contents")
 obj.get_file_contents("fileA.txt")
-
 print(obj)
 
 obj.mv_file("fileA.txt","algebra")
 
 print(obj)
+
+obj.set_permissions(obj.get_pwd(),"yo", True, True)
+pwd_node= obj.get_pwd()
+obj.update_permissions(pwd_node,"yo",True, False)
+print(pwd_node.permissions)
